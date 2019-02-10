@@ -1,7 +1,7 @@
 body {
-  margin-left: 25%;
-  margin-right: 25%;
-  margin-top: 10%;
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 1%;
   font-family: "Open Sans", sans-serif;
 }
 
@@ -11,7 +11,7 @@ label {
 }
 
 input {
-  width: 500px;
+  width: 400px;
   padding: 5px;
   font-size: 16px;
 }

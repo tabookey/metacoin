@@ -17,6 +17,10 @@ const MetaCoin = contract(metaCoinArtifact)
 let accounts
 let account
 
+let network = {
+  baseurl:'https://ropsten.etherscan.io/'
+}
+
 const App = {
   start: function () {
     const self = this
@@ -48,18 +52,40 @@ const App = {
     status.innerHTML = message
   },
 
+  link: function (path, text) {
+    return '<a href="' + network.baseurl + path + '">' + text + '</a>'
+  },
+
   refreshBalance: function () {
     const self = this
 
     let meta
     MetaCoin.deployed().then(function (instance) {
       meta = instance
+      const address = document.getElementById('address')
+      address.innerHTML = self.link('address/' + account, account)
+
       return meta.getBalance.call(account, { from: account })
     }).then(function (value) {
       const balanceElement = document.getElementById('balance')
       balanceElement.innerHTML = value.valueOf()
     }).catch(function (e) {
       console.log(e)
+      self.setStatus('Error getting balance; see log.')
+    })
+  },
+
+  mint : function () {
+    const self = this
+
+    MetaCoin.deployed().then(function (instance) {
+      self.setStatus('Mint: Initiating transaction... (please wait)')
+      return instance.mint({ from:account })
+    }).then(function (res) {
+      self.refreshBalance()
+      self.setStatus('Mint transaction complete!<br>\n' + self.link('tx/' + res.tx, res.tx))
+    }).catch(function (err) {
+      console.log('mint error: ', err)
       self.setStatus('Error getting balance; see log.')
     })
   },
@@ -76,8 +102,8 @@ const App = {
     MetaCoin.deployed().then(function (instance) {
       meta = instance
       return meta.sendCoin(receiver, amount, { from: account })
-    }).then(function () {
-      self.setStatus('Transaction complete!')
+    }).then(function (res) {
+      self.setStatus('Transaction complete!<br>\n' + self.link('tx/' + res.tx, res.tx))
       self.refreshBalance()
     }).catch(function (e) {
       console.log(e)
