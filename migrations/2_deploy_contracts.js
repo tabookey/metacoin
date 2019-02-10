@@ -5,6 +5,9 @@ let networks = {
   'ropsten': {
     relayHubAddr: '0x1349584869A1C7b8dc8AE0e93D8c15F5BB3B4B87'
   },
+  'xdai': {
+    relayHubAddr: '0x49a984490a7762B0e5d775f0FfA608899Ebe2ee8'
+  },
   'development': {
     relayHubAddr: '0x9C57C0F1965D225951FE1B2618C92Eefd687654F'
   }

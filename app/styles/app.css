@@ -6,12 +6,10 @@ body {
 }
 
 label {
-  display: inline-block;
-  width: 100px;
+  width: 600px;
 }
 
 input {
-  width: 400px;
   padding: 5px;
   font-size: 16px;
 }

@@ -43,6 +43,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
+    "browser-cookies": "^1.2.0",
     "tabookey-gasless": "^0.3.3-a"
   }
 }

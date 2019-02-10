@@ -9,6 +9,15 @@
 <body>
   <h1>MetaCoin</h1>
   <h2>Using Gassless Relays&nbsp;Network</h2>
+  <r>
+  <form id="keysource">
+    <div id="hide_metamask">
+    <input type="radio" value="metamask" name="keysource" id="metamask" onchange="App.changeKeySource(id)"><label for="metamask">Use Metamask</label> <div id="metamask_net"></div><br>
+    </div>
+    <input type="radio" value="local" name="keysource" id="local" onchange="App.changeKeySource(id)"><label for="local">Local Ganache (w/o Metamask)</label><br>
+    <input type="radio" value="ropsten" name="keysource" id="ropsten" onchange="App.changeKeySource(id)"><label for="ropsten">Ropsten (w/o Metamask)</label><br>
+    <input type="radio" value="xdai" name="keysource" id="xdai" onchange="App.changeKeySource(id)"><label for="xdai">xDai (w/o Metamask)</label><br>
+  </form>
   <h3>You have <span class="black"><span id="balance"></span> META</span></h3>
 
   <br>
