@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: './app/scripts/index.js',
-  mode: 'production',
+  mode: 'development',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'app.js'

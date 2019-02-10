@@ -31,4 +31,18 @@ contract MetaCoin {
 	function getBalance(address addr) public view returns(uint) {
 		return balances[addr];
 	}
+
+
+	mapping (address=>bool) minted;
+
+    /**
+     * mint some coins for this caller.
+     * (in a real-life application, minting is protected for admin, or by other mechanism.
+     * but for our sample, any user can mint some coins - but just once..
+     */
+    function mint() public {
+        require(!minted[msg.sender]);
+        minted[msg.sender] = true;
+        balances[msg.sender] += 10000;
+    }
 }
