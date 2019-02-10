@@ -22,7 +22,6 @@ let accounts
 let account
 
 let network = {
-  baseurl:'https://ropsten.etherscan.io/'
 }
 
 const App = {
