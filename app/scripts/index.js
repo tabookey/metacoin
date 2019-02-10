@@ -8,6 +8,10 @@ import { default as contract } from 'truffle-contract'
 // Import our contract artifacts and turn them into usable abstractions.
 import metaCoinArtifact from '../../build/contracts/MetaCoin.json'
 
+const tabookey = require('tabookey-gasless')
+
+const RelayProvider = tabookey.RelayProvider
+
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 const MetaCoin = contract(metaCoinArtifact)
 
@@ -24,6 +28,12 @@ let network = {
 const App = {
   start: function () {
     const self = this
+
+    var provider = new RelayProvider(web3.currentProvider, {
+      txfee: 12,
+      force_gasLimit: 5000000
+    })
+    web3.setProvider(provider)
 
     // Bootstrap the MetaCoin abstraction for Use.
     MetaCoin.setProvider(web3.currentProvider)
@@ -69,6 +79,11 @@ const App = {
     }).then(function (value) {
       const balanceElement = document.getElementById('balance')
       balanceElement.innerHTML = value.valueOf()
+
+      return meta.get_hub_addr.call({ from: account })
+    }).then(function (hubaddr) {
+      const hubaddrElement = document.getElementById('hubaddr')
+      hubaddrElement.innerHTML = self.link('address/' + hubaddr, hubaddr)
     }).catch(function (e) {
       console.log(e)
       self.setStatus('Error getting balance; see log.')
