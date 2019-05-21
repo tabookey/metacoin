@@ -80,7 +80,7 @@ const App = {
       const balanceElement = document.getElementById('balance')
       balanceElement.innerHTML = value.valueOf()
 
-      return meta.get_hub_addr.call({ from: account })
+      return meta.getHubAddr.call({ from: account })
     }).then(function (hubaddr) {
       const hubaddrElement = document.getElementById('hubaddr')
       hubaddrElement.innerHTML = self.link('address/' + hubaddr, hubaddr)
@@ -95,12 +95,12 @@ const App = {
 
     MetaCoin.deployed().then(function (instance) {
       self.setStatus('Mint: Initiating transaction... (please wait)')
-      return instance.mint({ from:account })
+      return instance.mint({ from:account})
     }).then(function (res) {
       self.refreshBalance()
       self.setStatus('Mint transaction complete!<br>\n' + self.link('tx/' + res.tx, res.tx))
     }).catch(function (err) {
-      console.log('mint error: ', err)
+      console.log('mint error:', err)
       self.setStatus('Error getting balance; see log.')
     })
   },

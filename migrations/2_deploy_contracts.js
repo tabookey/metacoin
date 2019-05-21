@@ -12,20 +12,17 @@ let networks = {
 
 var RelayHub = artifacts.require('./RelayHub.sol')
 
-module.exports = function (deployer, network) {
-  deployer.deploy(ConvertLib)
-  deployer.link(ConvertLib, MetaCoin)
+module.exports = async function (deployer, network) {
+  await deployer.deploy(ConvertLib)
+  await deployer.link(ConvertLib, MetaCoin)
   let hubAddr = networks[network].relayHubAddr
 
-  deployer.deploy(MetaCoin).then(() => {
-    console.log('hub=', hubAddr)
-  }).then(() => {
-    let hub = RelayHub.at(hubAddr)
-    return hub.depositFor(MetaCoin.address, { value:1e18 })
-  }).then(() => {
-    console.log("== Initializing Metacoin's Hub")
-    return MetaCoin.at(MetaCoin.address).init_hub(hubAddr)
-  }).catch(e => {
-    console.log('error: ', e)
-  })
-}
+  await deployer.deploy(MetaCoin)
+  console.log('hub=', hubAddr)
+  let hub = await RelayHub.at(hubAddr)
+  await hub.depositFor(MetaCoin.address, { value:1e17 })
+  console.log("== Initializing Metacoin's Hub")
+  let metacoin = await MetaCoin.at(MetaCoin.address)
+  await metacoin.init_hub(hubAddr)
+  console.log("Finished 2/3 migrations files")
+  }
