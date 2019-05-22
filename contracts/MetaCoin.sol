@@ -54,7 +54,7 @@ contract MetaCoin is RelayRecipient {
      * Without knowing the relay, getSender() cannot return the address of the real sender.
      * In production contracts, this call is done from the constructor, or restricted to ownerOnly.
      */
-    function init_hub(RelayHub hub_addr) public {
+    function init_hub(IRelayHub hub_addr) public {
         initRelayHub(hub_addr);
     }
 
