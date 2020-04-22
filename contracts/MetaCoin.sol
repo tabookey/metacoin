@@ -1,7 +1,8 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.16;
 
 import "./ConvertLib.sol";
-import "tabookey-gasless/contracts/RelayRecipient.sol";
+import "opengsn/contracts/BaseRelayRecipient.sol";
+import "opengsn/contracts/TrustedForwarder.sol";
 
 
 // This is just a simple example of a coin-like contract.
@@ -9,13 +10,15 @@ import "tabookey-gasless/contracts/RelayRecipient.sol";
 // coin/token contracts. If you want to create a standards-compliant
 // token, see: https://github.com/ConsenSys/Tokens. Cheers!
 
-contract MetaCoin is RelayRecipient {
+contract MetaCoin is BaseRelayRecipient {
 	mapping (address => uint) balances;
 
 	event Transfer(address indexed _from, address indexed _to, uint256 _value);
+	event Minted(address to);
 
 	constructor() public {
 		balances[tx.origin] = 10000;
+		trustedForwarder = address(new TrustedForwarder());
 	}
 
 	function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
@@ -34,7 +37,6 @@ contract MetaCoin is RelayRecipient {
 		return balances[addr];
 	}
 
-
 	mapping (address=>bool) minted;
 
     /**
@@ -46,26 +48,7 @@ contract MetaCoin is RelayRecipient {
         require(!minted[getSender()]);
         minted[getSender()] = true;
         balances[getSender()] += 10000;
-    }
-    
-    /**
-     * initialize RelayHub for our contract.
-     * This call is required so the contract will recognize relayed calls from direct calls.
-     * Without knowing the relay, getSender() cannot return the address of the real sender.
-     * In production contracts, this call is done from the constructor, or restricted to ownerOnly.
-     */
-    function init_hub(IRelayHub hub_addr) public {
-        initRelayHub(hub_addr);
-    }
-
-    function acceptRelayedCall(address /*relay*/, address /*from*/,
-        bytes memory/*encoded_function*/, uint /*gas_price*/, uint /*transaction_fee*/, bytes memory /* approval */ ) public view returns(uint) {
-        return 0; //accept everything.
-    }
-
-    //nothing to be done post-call. still, we must implement this method.
-    function postRelayedCall(address /*relay*/ , address /*from*/,
-        bytes memory/*encoded_function*/, bool /*success*/, uint /*used_gas*/, uint /*transaction_fee*/ ) public {
+				emit Minted(getSender());
     }
 
 }
